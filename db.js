@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import Lesson from "./Models/Lesson";
+import Lesson from "./Models/Lesson.js";
 
 let dbConnection;
 
