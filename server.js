@@ -11,8 +11,8 @@ connectToDatabase((error) => {
   if (!error) {
     db = getDB();
 
-    //ROUTES
-    //GET: all lessons
+    // ROUTES
+    // GET: all lessons
     app.get("/lessons", async (req, res) => {
       try {
         const lessons = await db.collection("lessons").find().toArray();
@@ -20,6 +20,48 @@ connectToDatabase((error) => {
       } catch (error) {
         console.error("Error fetching lessons:", error);
         res.status(500).json({ error: "Failed to fetch lessons" });
+      }
+    });
+
+    // POST: create a new order
+    app.post("/orders", async (req, res) => {
+      try {
+        const { name, phone, lessonIds, total } = req.body;
+
+        // Basic validation
+        if (
+          !name ||
+          !phone ||
+          !Array.isArray(lessonIds) ||
+          lessonIds.length === 0 ||
+          !total
+        ) {
+          return res.status(400).json({ error: "Invalid order data" });
+        }
+
+        // Create new order object
+        const newOrder = new Order(name, phone, lessonIds, total);
+
+        // Insert order into the database
+        const result = await db.collection("orders").insertOne(newOrder);
+
+        // Reduce spaces available for each lesson in the order
+        for (const lessonId of lessonIds) {
+          await db
+            .collection("lessons")
+            .updateOne({ id: lessonId }, { $inc: { spaces: -1 } });
+        }
+
+        console.log("Order created with ID:", result.insertedId);
+        res
+          .status(201)
+          .json({
+            message: "Order created successfully",
+            orderId: result.insertedId,
+          });
+      } catch (error) {
+        console.error("Error creating order:", error);
+        res.status(500).json({ error: "Failed to create order" });
       }
     });
 

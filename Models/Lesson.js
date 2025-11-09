@@ -1,5 +1,15 @@
+//Model for Lesson objects
 export default class Lesson {
-  constructor(id, subject, location, price, spaces, image, description, rating) {
+  constructor(
+    id,
+    subject,
+    location,
+    price,
+    spaces,
+    image,
+    description,
+    rating
+  ) {
     this.id = id;
     this.subject = subject;
     this.location = location;
