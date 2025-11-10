@@ -1,8 +1,10 @@
+import { ObjectId } from "mongodb";
+
 //Model for Order objects
 export default class Order {
-  constructor(id, name, phone, lessonIds, total) {
-    this.id = id;
+  constructor(name, email, phone, lessonIds, total) {
     this.name = name;
+    this.email = email;
     this.phone = phone;
     this.lessonIds = lessonIds;
     this.total = total;

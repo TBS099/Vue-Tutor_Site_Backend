@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { connectToDatabase, getDB } from "./db.js";
+import Order from "./Models/Order.js";
 
 const app = express();
 app.use(cors());
@@ -72,11 +73,13 @@ connectToDatabase((error) => {
     // POST: create a new order
     app.post("/orders", async (req, res) => {
       try {
-        const { name, phone, lessonIds, total } = req.body;
+        const { name, email, phone, lessonIds, total } = req.body;
+        console.log(req.body);
 
         // Basic validation
         if (
           !name ||
+          !email ||
           !phone ||
           !Array.isArray(lessonIds) ||
           lessonIds.length === 0 ||
@@ -86,7 +89,7 @@ connectToDatabase((error) => {
         }
 
         // Create new order object
-        const newOrder = new Order(name, phone, lessonIds, total);
+        const newOrder = new Order(name, email, phone, lessonIds, total);
 
         // Insert order into the database
         const result = await db.collection("Orders").insertOne(newOrder);
