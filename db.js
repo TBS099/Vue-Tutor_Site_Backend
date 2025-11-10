@@ -4,7 +4,8 @@ import Lesson from "./Models/Lesson.js";
 let dbConnection;
 
 //Create connection string to MongoDB Atlas
-const connectionString ="YOUR CONNECTION STRING";
+const connectionString =
+  "mongodb+srv://root:root@tutor-site-db.8jwbs2s.mongodb.net/?appName=Tutor-Site-DB";
 
 //Function to connect to the database
 export async function connectToDatabase(callback) {
@@ -27,11 +28,21 @@ export function getDB() {
 
 //Initialize the database if necessary
 async function initDB() {
-  const lessonCollection = dbConnection.collection("lessons");
+  //Get existing collection names
+  const collections = await dbConnection.listCollections().toArray();
+  const collectionNames = collections.map((col) => col.name);
 
-  const count = await lessonCollection.countDocuments();
+  //Check if lessons collection exists; if not, create it
+  if (!collectionNames.includes("Lessons")) {
+    await dbConnection.createCollection("Lessons");
+    console.log("Lessons collection created");
+  }
 
-  if (count === 0) {
+  //Check if lessons collection is empty; if so, populate with sample data
+  const lessonCollection = dbConnection.collection("Lessons");
+  const lessonsCount = await lessonCollection.countDocuments();
+
+  if (lessonsCount === 0) {
     console.log("Initializing sample lessons data");
 
     // Sample lessons data
@@ -141,6 +152,14 @@ async function initDB() {
     await lessonCollection.insertMany(sampleLessons);
     console.log("Lessons collection initialized with 10 sample lessons!");
   } else {
-    console.log(`Lessons collection already has ${count} documents.`);
+    console.log(`Lessons collection already has ${lessonsCount} documents.`);
+  }
+
+  //Check if Orders collection exists; if not, create it
+  if (!collectionNames.includes("Orders")) {
+    await dbConnection.createCollection("Orders");
+    console.log("Orders collection created");
+  } else {
+    console.log("Orders collection already exists");
   }
 }

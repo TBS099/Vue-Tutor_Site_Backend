@@ -1,10 +1,13 @@
 import cors from "cors";
 import express from "express";
 import { connectToDatabase, getDB } from "./db.js";
+import { logger, serveImages } from "./middleware.js";
 import Order from "./Models/Order.js";
 
 const app = express();
 app.use(cors());
+app.use(logger);
+app.use("/images", serveImages);
 app.use(express.json());
 
 let db;
