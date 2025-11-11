@@ -10,8 +10,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Create Express app
 const app = express();
-const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(logger);
 app.use(express.json());
@@ -27,16 +27,14 @@ connectToDatabase((error) => {
     // GET: all lessons
     app.get("/lessons", async (req, res) => {
       try {
-        const lessons = await db.collection("Lessons").find().toArray();
+        const lessons = await db.collection("Lessons").find().toArray(); // Fetch lessons from DB
+        const host = `${req.protocol}://${req.get("host")}`; // Construct host URL
 
-        const host = `${req.protocol}://${req.get("host")}`;
-
+        // Transform lessons to include full image URL
         const transformedLessons = lessons.map((lesson) => ({
           ...lesson,
           imageUrl: lesson.image ? `${host}/Images/${lesson.image}` : null,
         }));
-
-        console.log("Fetched lessons:", transformedLessons);
 
         res.status(200).json(transformedLessons);
       } catch (error) {
@@ -48,9 +46,9 @@ connectToDatabase((error) => {
     //PUT: update lesson spaces
     app.put("/lessons/:id", async (req, res) => {
       try {
+        // Parse lesson ID and update data from request
         const lessonId = parseInt(req.params.id);
         const updateData = req.body;
-        console.log(req.params.id);
 
         // Only allow valid fields
         const allowedFields = [
@@ -61,25 +59,29 @@ connectToDatabase((error) => {
           "description",
           "rating",
         ];
+
+        // Build the update object
         const updateFields = {};
         for (const key of allowedFields) {
           if (updateData[key] !== undefined)
             updateFields[key] = updateData[key];
         }
 
+        // If no valid fields to update, return error
         if (Object.keys(updateFields).length === 0) {
           return res.status(400).json({ error: "No valid fields to update" });
         }
 
+        // Update the lesson in the database
         const result = await db
           .collection("Lessons")
           .updateOne({ id: lessonId }, { $set: updateFields });
 
+        // Check if the lesson was found and updated
         if (result.matchedCount === 0) {
           return res.status(404).json({ error: "Lesson not found" });
         }
 
-        console.log(`Lesson ${lessonId} updated:`, updateFields);
         res
           .status(200)
           .json({ message: "Lesson updated", updated: updateFields });
@@ -91,6 +93,7 @@ connectToDatabase((error) => {
 
     //GET: Lesson Images
     app.get("/Images/:imageName", (req, res) => {
+      // Serve lesson image files
       const imageName = req.params.imageName;
       const imagePath = path.join(__dirname, "Uploads", imageName);
 
@@ -105,6 +108,7 @@ connectToDatabase((error) => {
     // POST: create a new order
     app.post("/orders", async (req, res) => {
       try {
+        // Extract order data from request body
         const { name, email, phone, lessonIds, total } = req.body;
         console.log(req.body);
 
@@ -133,7 +137,6 @@ connectToDatabase((error) => {
             .updateOne({ id: lessonId }, { $inc: { spaces: -1 } });
         }
 
-        console.log("Order created with ID:", result.insertedId);
         res.status(201).json({
           message: "Order created successfully",
           orderId: result.insertedId,

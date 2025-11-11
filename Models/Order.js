@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 //Model for Order objects
 export default class Order {
   constructor(name, email, phone, lessonIds, total) {

@@ -3,11 +3,11 @@ import Lesson from "./Models/Lesson.js";
 
 let dbConnection;
 
-//Create connection string to MongoDB Atlas
+// Create connection string to MongoDB Atlas
 const connectionString =
   "mongodb+srv://root:root@tutor-site-db.8jwbs2s.mongodb.net/?appName=Tutor-Site-DB";
 
-//Function to connect to the database
+// Function to connect to the database
 export async function connectToDatabase(callback) {
   try {
     const client = await MongoClient.connect(connectionString);
@@ -22,26 +22,27 @@ export async function connectToDatabase(callback) {
   }
 }
 
+// Function to get the database connection
 export function getDB() {
   return dbConnection;
 }
 
-//Initialize the database if necessary
+// Initialize the database if necessary
 async function initDB() {
-  //Get existing collection names
+  // Get existing collection names
   const collections = await dbConnection.listCollections().toArray();
   const collectionNames = collections.map((col) => col.name);
 
-  //Check if lessons collection exists; if not, create it
+  // Check if lessons collection exists; if not, create it
   if (!collectionNames.includes("Lessons")) {
     await dbConnection.createCollection("Lessons");
     console.log("Lessons collection created");
   }
 
-  //Check if lessons collection is empty; if so, populate with sample data
   const lessonCollection = dbConnection.collection("Lessons");
   const lessonsCount = await lessonCollection.countDocuments();
 
+  // Check if lessons collection is empty; if so, populate with sample data
   if (lessonsCount === 0) {
     console.log("Initializing sample lessons data");
 
@@ -149,6 +150,7 @@ async function initDB() {
       ),
     ];
 
+    // Insert sample lessons into the collection and log the result
     await lessonCollection.insertMany(sampleLessons);
     console.log("Lessons collection initialized with 10 sample lessons!");
   } else {
