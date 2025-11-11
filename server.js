@@ -1,13 +1,19 @@
 import cors from "cors";
 import express from "express";
 import { connectToDatabase, getDB } from "./db.js";
-import { logger, serveImages } from "./middleware.js";
+import { logger } from "./middleware.js";
 import Order from "./Models/Order.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// __dirname replacement in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(logger);
-app.use("/images", serveImages);
 app.use(express.json());
 
 let db;
@@ -22,7 +28,17 @@ connectToDatabase((error) => {
     app.get("/lessons", async (req, res) => {
       try {
         const lessons = await db.collection("Lessons").find().toArray();
-        res.status(200).json(lessons);
+
+        const host = `${req.protocol}://${req.get("host")}`;
+
+        const transformedLessons = lessons.map((lesson) => ({
+          ...lesson,
+          imageUrl: lesson.image ? `${host}/Images/${lesson.image}` : null,
+        }));
+
+        console.log("Fetched lessons:", transformedLessons);
+
+        res.status(200).json(transformedLessons);
       } catch (error) {
         console.error("Error fetching lessons:", error);
         res.status(500).json({ error: "Failed to fetch lessons" });
@@ -71,6 +87,19 @@ connectToDatabase((error) => {
         console.error("Error updating lesson:", error);
         res.status(500).json({ error: "Could not update lesson" });
       }
+    });
+
+    //GET: Lesson Images
+    app.get("/Images/:imageName", (req, res) => {
+      const imageName = req.params.imageName;
+      const imagePath = path.join(__dirname, "Uploads", imageName);
+
+      res.sendFile(imagePath, (err) => {
+        if (err) {
+          console.error("Error sending image file:", err);
+          res.status(404).json({ error: "Image not found" });
+        }
+      });
     });
 
     // POST: create a new order

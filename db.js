@@ -53,7 +53,7 @@ async function initDB() {
         "London",
         50,
         5,
-        "/images/math.jpg",
+        "math.webp",
         "Comprehensive math tutoring sessions",
         4.5
       ),
@@ -63,7 +63,7 @@ async function initDB() {
         "Manchester",
         60,
         3,
-        "/images/physics.jpg",
+        "physics.jpg",
         "Physics fundamentals and practical applications",
         4.2
       ),
@@ -73,7 +73,7 @@ async function initDB() {
         "Birmingham",
         55,
         4,
-        "/images/chemistry.jpg",
+        "chemistry.jpg",
         "Introduction to chemistry concepts and experiments",
         4.0
       ),
@@ -83,7 +83,7 @@ async function initDB() {
         "Liverpool",
         45,
         6,
-        "/images/biology.jpg",
+        "biology.jpg",
         "Study of living organisms and ecosystems",
         4.3
       ),
@@ -93,7 +93,7 @@ async function initDB() {
         "Leeds",
         70,
         5,
-        "/images/compsci.jpg",
+        "compsci.jpg",
         "Programming and computer fundamentals",
         4.8
       ),
@@ -103,7 +103,7 @@ async function initDB() {
         "Bristol",
         40,
         8,
-        "/images/english.jpg",
+        "english.jpg",
         "Exploring poetry, drama, and classic novels",
         4.4
       ),
@@ -113,7 +113,7 @@ async function initDB() {
         "Nottingham",
         50,
         7,
-        "/images/history.jpg",
+        "history.jpg",
         "World history and modern civilization overview",
         4.1
       ),
@@ -123,7 +123,7 @@ async function initDB() {
         "Cardiff",
         45,
         6,
-        "/images/geography.jpg",
+        "geography.jpg",
         "Understanding the world’s landscapes and cultures",
         4.0
       ),
@@ -133,7 +133,7 @@ async function initDB() {
         "Edinburgh",
         65,
         5,
-        "/images/art.jpg",
+        "art.jpg",
         "Hands-on creative art and digital design projects",
         4.6
       ),
@@ -143,7 +143,7 @@ async function initDB() {
         "Glasgow",
         55,
         4,
-        "/images/music.jpg",
+        "music.webp",
         "Learn instruments, music theory, and performance",
         4.7
       ),
