@@ -4,8 +4,7 @@ import Lesson from "./Models/Lesson.js";
 let dbConnection;
 
 // Create connection string to MongoDB Atlas
-const connectionString =
-  "mongodb+srv://root:root@tutor-site-db.8jwbs2s.mongodb.net/?appName=Tutor-Site-DB";
+const connectionString = process.env.MONGO_URI;
 
 // Function to connect to the database
 export async function connectToDatabase(callback) {
