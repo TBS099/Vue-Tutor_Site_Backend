@@ -53,7 +53,7 @@ async function initDB() {
         "London",
         50,
         5,
-        "math.webp",
+        "math.png",
         "Comprehensive math tutoring sessions",
         4.5
       ),
@@ -63,7 +63,7 @@ async function initDB() {
         "Manchester",
         60,
         3,
-        "physics.jpg",
+        "physics.png",
         "Physics fundamentals and practical applications",
         4.2
       ),
@@ -73,7 +73,7 @@ async function initDB() {
         "Birmingham",
         55,
         4,
-        "chemistry.jpg",
+        "chemistry.png",
         "Introduction to chemistry concepts and experiments",
         4.0
       ),
@@ -83,7 +83,7 @@ async function initDB() {
         "Liverpool",
         45,
         6,
-        "biology.jpg",
+        "biology.png",
         "Study of living organisms and ecosystems",
         4.3
       ),
@@ -93,17 +93,17 @@ async function initDB() {
         "Leeds",
         70,
         5,
-        "compsci.jpg",
+        "comp_sci.png",
         "Programming and computer fundamentals",
         4.8
       ),
       new Lesson(
         6,
-        "English Literature",
+        "eng_lit Literature",
         "Bristol",
         40,
         8,
-        "english.jpg",
+        "eng_lit.png",
         "Exploring poetry, drama, and classic novels",
         4.4
       ),
@@ -113,7 +113,7 @@ async function initDB() {
         "Nottingham",
         50,
         7,
-        "history.jpg",
+        "history.png",
         "World history and modern civilization overview",
         4.1
       ),
@@ -123,7 +123,7 @@ async function initDB() {
         "Cardiff",
         45,
         6,
-        "geography.jpg",
+        "geography.png",
         "Understanding the world’s landscapes and cultures",
         4.0
       ),
@@ -133,7 +133,7 @@ async function initDB() {
         "Edinburgh",
         65,
         5,
-        "art.jpg",
+        "art.png",
         "Hands-on creative art and digital design projects",
         4.6
       ),
@@ -143,7 +143,7 @@ async function initDB() {
         "Glasgow",
         55,
         4,
-        "music.webp",
+        "music.png",
         "Learn instruments, music theory, and performance",
         4.7
       ),
